@@ -36,14 +36,14 @@ export class CrudServiceService {
     headers = headers.set('Accept', 'application/vnd.github.v3+json');
     if (tipo == "CSV") {
       return this.http.get(
-        'https://api.github.com/repos/jpillajo/backend-nlp-dementia/contents/assets/Formato.csv',
+        'https://api.github.com/repos/jpillajo/nlp-dementia/contents/Examples/Formato.csv',
         {
           headers: headers,
         }
       );
     } else {
       return this.http.get(
-        'https://api.github.com/repos/jpillajo/backend-nlp-dementia/contents/assets/Formato.xlsx',
+        'https://api.github.com/repos/jpillajo/nlp-dementia/contents/Examples/Formato.xlsx',
         {
           headers: headers,
         }
