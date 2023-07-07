@@ -228,7 +228,7 @@ app = Flask(__name__)
 CORS(app)
 
 # CARGA DE LA BOLSA DE PALABRAS (SEGÚN ENFOQUE)
-urlBolsaDePalabras = "https://raw.githubusercontent.com/jpillajo/Documentos/main/BOLSA%20DE%20PALABRAS%203%20MODELOS%20PARA%20CATIA.csv"
+urlBolsaDePalabras = "https://raw.githubusercontent.com/jpillajo/nlp-dementia/NLP-DEMENTIA-BACKEND/Bag%20of%20Words/BOLSA%20DE%20PALABRAS%203%20MODELOS.csv"
 enfoqueBiomedico = importarDatosColumna("A. MODELO BIO MEDICO", urlBolsaDePalabras)
 columnaEnfoquePsicosocial = importarDatosColumna("B. ENFOQUE PSICOSOCIAL - COMUNITARIO", urlBolsaDePalabras)
 enfoquePsicosocial = eliminarFilasVacias(columnaEnfoquePsicosocial)
@@ -290,7 +290,7 @@ def analizarSimilitud(activador, bolsaGeneralSR, documentos=''):
         similitudJaccard = metodoJaccard(bolsaDePalabrasCurado, dataset)
         similitudCoseno = metodoCoseno(bolsaDePalabrasCuradoSR, bolsaGeneralSR, dataset)
     if activador == 1:
-        urlDatasetDefinicionesDemencia = "https://raw.githubusercontent.com/jpillajo/Documentos/main/EXCEL%20DE%20VACIADO%20COMPLETO%20DE%20ENTREVISTAS%20PROFESIONALES%20MAYO2021.csv"
+        urlDatasetDefinicionesDemencia = "https://raw.githubusercontent.com/jpillajo/nlp-dementia/NLP-DEMENTIA-BACKEND/Bag%20of%20Words/ENTREVISTAS%20A%20PROFESIONALES%20MAYO2021.csv"
         dataset = importarDatosColumna("P7. ¿Qué entiende por demencia?", urlDatasetDefinicionesDemencia)
         dataset = eliminarFilasVacias(dataset)
         dataset = convertirMayusculasEnMinusculas(dataset)
