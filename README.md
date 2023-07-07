@@ -7,6 +7,17 @@ In several diseases and pathologies, the scientific community has not explicitly
 # Project description
 This website determines the taxonomy of a dementia definition by means of a natural language processing model, which takes as input a definition through manual typing or document upload in .csv format. The model makes use of two similarity metrics: Jaccard and Cosine, to present, through percentages, the level of membership of a dementia definition towards the three approaches proposed in the taxonomy. The page also presents the taxonomy of each of the definitions of the original Dataset that served as the basis for the design and programming of the proposed model.
 
+# Folders
+### _Bag of words_:
+```
+• Description 1.
+```
+
+### _Examples_:
+```
+• Description 1.
+```
+
 # Modules
 ### _Query:_
 
