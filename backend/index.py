@@ -228,7 +228,7 @@ app = Flask(__name__)
 CORS(app)
 
 # CARGA DE LA BOLSA DE PALABRAS (SEGÚN ENFOQUE)
-urlBolsaDePalabras = "https://raw.githubusercontent.com/jpillajo/nlp-dementia/NLP-DEMENTIA-BACKEND/Bag%20of%20Words/BOLSA%20DE%20PALABRAS%203%20MODELOS.csv"
+urlBolsaDePalabras = "https://raw.githubusercontent.com/jpillajo/nlp-dementia/Release_001/Bag%20of%20Words/BOLSA%20DE%20PALABRAS%203%20MODELOS.csv"
 enfoqueBiomedico = importarDatosColumna("A. MODELO BIO MEDICO", urlBolsaDePalabras)
 columnaEnfoquePsicosocial = importarDatosColumna("B. ENFOQUE PSICOSOCIAL - COMUNITARIO", urlBolsaDePalabras)
 enfoquePsicosocial = eliminarFilasVacias(columnaEnfoquePsicosocial)
@@ -290,7 +290,7 @@ def analizarSimilitud(activador, bolsaGeneralSR, documentos=''):
         similitudJaccard = metodoJaccard(bolsaDePalabrasCurado, dataset)
         similitudCoseno = metodoCoseno(bolsaDePalabrasCuradoSR, bolsaGeneralSR, dataset)
     if activador == 1:
-        urlDatasetDefinicionesDemencia = "https://raw.githubusercontent.com/jpillajo/nlp-dementia/NLP-DEMENTIA-BACKEND/Bag%20of%20Words/ENTREVISTAS%20A%20PROFESIONALES%20MAYO2021.csv"
+        urlDatasetDefinicionesDemencia = "https://raw.githubusercontent.com/jpillajo/nlp-dementia/Release_001/Bag%20of%20Words/ENTREVISTAS%20A%20PROFESIONALES%20MAYO2021.csv"
         dataset = importarDatosColumna("P7. ¿Qué entiende por demencia?", urlDatasetDefinicionesDemencia)
         dataset = eliminarFilasVacias(dataset)
         dataset = convertirMayusculasEnMinusculas(dataset)
@@ -404,21 +404,26 @@ def obtenerDataset():
 
 @app.route('/api/subir-dataset', methods=['POST'])
 def subirArchivoCSV():
-    archivoEnviadoCSV = request.files['file']
-    if archivoEnviadoCSV.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-        archivoEnviadoCSV.save('assets/dataset.xlsx')
-        archivoAlmacenadoCSV = pd.read_excel('assets/dataset.xlsx')
-        archivoAlmacenadoCSV.to_csv('assets/dataset.csv')
-        if os.path.exists('assets/dataset.xlsx'):
-            os.remove('assets/dataset.xlsx')
-    else:
-        archivoEnviadoCSV.save('assets/dataset.csv')
-        archivoAlmacenadoCSV = pd.read_csv('assets/dataset.csv')
-    vectorAutores = []
-    for i in range(len(archivoAlmacenadoCSV)):
-        vectorAutores.append({'id': i, 'valor': archivoAlmacenadoCSV.loc[i]['Autor']})
-    dto = json.dumps(vectorAutores)
-    return dto
+    try:
+        archivoEnviadoCSV = request.files['file']
+        if archivoEnviadoCSV.mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            archivoEnviadoCSV.save('assets/dataset.xlsx')
+            archivoAlmacenadoCSV = pd.read_excel('assets/dataset.xlsx')
+            archivoAlmacenadoCSV.to_csv('assets/dataset.csv')
+            if os.path.exists('assets/dataset.xlsx'):
+                os.remove('assets/dataset.xlsx')
+        else:
+            archivoEnviadoCSV.save('assets/dataset.csv')
+            archivoAlmacenadoCSV = pd.read_csv('assets/dataset.csv')
+        vectorAutores = []
+        for i in range(len(archivoAlmacenadoCSV)):
+            vectorAutores.append({'id': i, 'valor': archivoAlmacenadoCSV.loc[i]['Autor']})
+        dto = json.dumps(vectorAutores)
+        return dto
+    except:
+        dto = json.dumps({'error': 'El archivo no maneja el formato requerido'})
+        return dto
+
 
 
 @app.route('/api/consultar-similitud-dataset', methods=['POST'])
