@@ -80,15 +80,38 @@ export class UploadDatasetComponent implements OnInit {
       ) {
         let formParams = new FormData();
         formParams.append('file', this.file);
-        this.crudService.subirArchivoCSV(formParams).subscribe((resultado) => {
-          this.mostrarComboBoxColumnas = true;
-          this.listaComboBox = resultado;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Archivo cargado',
-            detail: 'El archivo se ha cargado correctamente',
-          });
-        });
+        this.crudService.subirArchivoCSV(formParams).subscribe(
+          (resultado) => {
+            if (resultado.length == 0) {
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Archivo vacío',
+                detail: 'El archivo cargado se encuentra vacío',
+              });
+            } else if (resultado.error) {
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Sin formato',
+                detail: resultado.error,
+              });
+            } else {
+              this.mostrarComboBoxColumnas = true;
+              this.listaComboBox = resultado;
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Archivo cargado',
+                detail: 'El archivo se ha cargado correctamente',
+              });
+            }
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Servidor no responde',
+              detail: 'El servidor a dejado de funcionar',
+            });
+          }
+        );
       } else {
         this.messageService.add({
           severity: 'warn',
